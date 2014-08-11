@@ -1,5 +1,27 @@
-
-<% @temas_solicitado.each do |d| %>
-	<b><%= d.titulo %></b><br />
-	<%= d.texto_ideia %> <br /><br />
-<% end %>
+<div id="id_ideias">
+	<ul id="setor_ideia">            
+	  <% @temas_solicitado.each do |d| %>
+	    <li>
+	      <b><%= d.titulo %></b><br />
+	      <%= d.texto_ideia[0..100] %>... <br /><br />
+	      <div style="float:left;">
+	        Ideia enviada por: <%= d.nome %>
+	      </div>
+	      <div style="float:right;">
+	        <a href="javascript:void(0);" class="ver_mais" data-ideia="<%= d.id%>">Ver Mais</a> 
+	      </div><br /><br />
+	      <div class="teste-star star<%=d.id%>" >
+	        <input class="star {split:2}" type="radio" value="1" name="star<%=d.id%>">
+	        <input class="star {split:2}" type="radio" value="2" name="star<%=d.id%>">
+	        <input class="star {split:2}" type="radio" value="3" name="star<%=d.id%>">
+	        <input class="star {split:2}" type="radio" value="4" name="star<%=d.id%>">
+	        <input class="star {split:2}" type="radio" value="5" name="star<%=d.id%>">
+	      </div><br /> <br />
+	      <div id="fb-root"></div>  
+	      <div class="fb-share-button" data-href="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=d.id%>"></div>
+	      <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-url="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=d.id%>">Tweet</a>
+	      <div class="g-plusone" data-size="tall" data-annotation="none"></div>
+	    </li>
+	  <% end %>            
+	</ul>
+</div>  
