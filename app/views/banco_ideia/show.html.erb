@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nome:</strong>
+  <%= @banco_ideium.nome %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @banco_ideium.email %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @banco_ideium.estado %>
+</p>
+
+<p>
+  <strong>Cidade:</strong>
+  <%= @banco_ideium.cidade %>
+</p>
+
+<p>
+  <strong>Telefone:</strong>
+  <%= @banco_ideium.telefone %>
+</p>
+
+<p>
+  <strong>Lista tipo:</strong>
+  <%= @banco_ideium.lista_tipo %>
+</p>
+
+<p>
+  <strong>Titulo:</strong>
+  <%= @banco_ideium.titulo %>
+</p>
+
+<p>
+  <strong>Texto ideia:</strong>
+  <%= @banco_ideium.texto_ideia %>
+</p>
+
+<%= link_to 'Edit', edit_banco_ideium_path(@banco_ideium) %> |
+<%= link_to 'Back', banco_ideia_path %>

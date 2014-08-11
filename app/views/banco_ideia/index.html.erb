@@ -1,0 +1,39 @@
+<h1>Listing banco_ideia</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Estado</th>
+      <th>Cidade</th>
+      <th>Telefone</th>
+      <th>Lista tipo</th>
+      <th>Titulo</th>
+      <th>Texto ideia</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @banco_ideia.each do |banco_ideium| %>
+      <tr>
+        <td><%= banco_ideium.nome %></td>
+        <td><%= banco_ideium.email %></td>
+        <td><%= banco_ideium.estado %></td>
+        <td><%= banco_ideium.cidade %></td>
+        <td><%= banco_ideium.telefone %></td>
+        <td><%= banco_ideium.lista_tipo %></td>
+        <td><%= banco_ideium.titulo %></td>
+        <td><%= banco_ideium.texto_ideia %></td>
+        <td><%= link_to 'Show', banco_ideium %></td>
+        <td><%= link_to 'Edit', edit_banco_ideium_path(banco_ideium) %></td>
+        <td><%= link_to 'Destroy', banco_ideium, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Banco ideium', new_banco_ideium_path %>

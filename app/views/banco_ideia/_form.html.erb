@@ -1,0 +1,243 @@
+<style>
+.marcar{
+  background-color: red;
+}
+.esquerda{
+  margin-right: 17px;
+  width: 540px;
+  float:left;
+}
+
+.wrapper {
+    margin: 0 auto;
+    width: 993px;
+}
+
+.wrapper > aside {
+    width: 430px;
+}
+
+.pull-right {
+    float: right;
+}
+.direita{
+  float:right;
+  margin-left: 200px; 
+}
+li {
+    border-color: #ECECEC #E1E1E1 #E2E2E2;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 -1px 1px 0 rgba(245, 245, 245, 0.2);
+    font-family: 'Lucida Grande';
+    margin-bottom: 10px;
+    padding: 34px 40px 35px 55px;
+}
+
+ol, ul {
+    list-style: none outside none;
+}
+
+</style>
+
+<%= form_for(@banco_ideium) do |f| %>
+  <% if @banco_ideium.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@banco_ideium.errors.count, "error") %> prohibited this banco_ideium from being saved:</h2>
+
+      <ul>
+      <% @banco_ideium.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= hidden_field_tag "banco_ideium[lista_tipo]" %>
+  <div>
+
+
+
+
+
+    <div class="wrapper">
+      <section  class="esquerda">
+        <div align="center">
+          AVALIE AS IDEIAS QUE JÁ FORAM PROPOSTAS E <br />
+          compartilhe as que você mais gostou<br />
+          <%=select("escolher", "tema", @temas.collect {|p| [ p.descricao, p.id ] }, { include_blank: true })%>
+        </div><br /><br />
+        <div id="id_ideias">
+          <ul id="setor_ideia">            
+              <% @ideias.each do |d| %>
+                <li>
+                  <b><%= d.titulo %></b><br />
+                  <%= d.texto_ideia[0..100] %>... <br /><br />
+                  <div style="float:left;">
+                    Ideia enviada por: <%= d.nome %>
+                  </div>
+                  <div style="float:right;">
+                    <a href="javascript:void(0);" class="ver_mais" data-ideia="<%= d.id%>">Ver Mais</a> 
+                  </div><br /><br />
+                  <div class="teste-star star<%=d.id%>" >
+                    <input class="star {split:2}" type="radio" value="1" name="star<%=d.id%>">
+                    <input class="star {split:2}" type="radio" value="2" name="star<%=d.id%>">
+                    <input class="star {split:2}" type="radio" value="3" name="star<%=d.id%>">
+                    <input class="star {split:2}" type="radio" value="4" name="star<%=d.id%>">
+                    <input class="star {split:2}" type="radio" value="5" name="star<%=d.id%>">
+                  </div><br /> <br />
+                  <div id="fb-root"></div>  
+                  <div class="fb-share-button" data-href="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=d.id%>"></div>
+                  <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-url="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=d.id%>">Tweet</a>
+                  <div class="g-plusone" data-size="tall" data-annotation="none"></div>
+                </li>
+              <% end %>            
+          </ul>
+        </div>  
+      </section>
+
+      <aside class="pull-right">
+        
+        <section class="direita">
+          <div>
+            1 - Quem é você?
+          </div><br />
+          <div class="field" id="id_passo_01">
+            Nome:     <%= f.text_field :nome %><br /> 
+            e-mail:   <%= f.text_field :email %><br /> 
+            Estado:   <%= f.text_field :estado %><br /> 
+            Cidade:   <%= f.text_field :cidade %><br /> 
+            Telefone: <%= f.text_field :telefone %><br /><br />
+            <a href="javascript:void(0)" id="btn_passo_01">Prosseguir</a> <br /><br />
+          </div>
+          <div>
+            2 - Tema
+          </div><br />
+          <div class="field" style="display:none;" id="id_passo_02" >
+            <% @temas.each do |t|%>
+              <%= link_to t.descricao, 'javascript:void(0)', :class => 'tema', :id_tema => t.id %>&nbsp;&nbsp;
+            <% end %><br /><br />
+            <a href="javascript:void(0);" id="btn_passo_02">Prosseguir</a> <br /><br />
+          </div>
+          <div>
+            3 - Ideia
+          </div><br />
+          <div class="field" style="display:none;" id="id_passo_03" >
+            Título de sua idéia:<br /> <%= f.text_field :titulo %><br />
+            Escreva sua idéia:<br /> <%= f.text_area :texto_ideia %><br />
+            <%= f.submit 'Enviar'%>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#btn_passo_01').click(function(){
+      $('#id_passo_01').hide();
+      $('#id_passo_02').show();
+    });
+    $('#btn_passo_02').click(function(){
+      $('#id_passo_02').hide();
+      $('#id_passo_03').show();
+    });
+
+    $('.tema').click(function(){ 
+      $(this).toggleClass('marcar');
+      var arr = []
+
+      $.each($('.tema'), function(index, value){
+        if ($('.tema')[index].attributes['class'].value == "tema marcar" ){
+          arr.push($('.tema')[index].attributes['id_tema'].value)
+        }
+        
+      });
+      $('#banco_ideium_lista_tipo').val(arr);
+    });
+
+    $('#escolher_tema').change(function(){
+      codigo = $(this).val();
+      $.ajax({
+        url : 'exibir_ideias_tema',
+        type : 'GET',
+        data : "codigo_tema="+codigo,
+        success: function(data){
+          $('#id_ideias').html(data);
+        },
+        error: function(){
+          alert('erro');
+        }
+      });
+    });
+
+    $('.ver_mais').click(function(){
+      codigo = $(this).attr('data-ideia');
+      $.ajax({
+        url : 'exibir_ideia_completa',
+        type : 'GET',
+        data : "codigo_ideia="+codigo,
+        success: function(data){
+          $('#id_ideias').html(data);
+        },
+        error: function(){
+          alert('erro');
+        }
+      });
+    });
+
+    $('.auto-submit-star').rating({
+      callback: function(value, link){
+        alert(value);
+      }
+    });
+
+    /* FACEBOOK */
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&appId=257119214411780&version=v2.0";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    /* TWITER */
+    !function(d,s,id){ 
+      var js,fjs=d.getElementsByTagName(s)[0];
+      if(!d.getElementById(id)){
+        js=d.createElement(s);
+        js.id=id;js.src="https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js,fjs);
+      }
+    }(document,"script","twitter-wjs");
+
+    /*GOOGLE*/
+    (function() {
+      var po = document.createElement('script'); 
+      po.type = 'text/javascript'; 
+      po.async = true;
+      po.src = 'https://apis.google.com/js/platform.js';
+      var s = document.getElementsByTagName('script')[0]; 
+      s.parentNode.insertBefore(po, s);
+    })();
+
+
+
+$('.star').click( function () {
+      
+});
+
+$('.auto-submit-star').rating({ 
+         callback: function(value, link){ 
+           alert(value); 
+          } 
+      });
+
+
+  });
+
+
+</script>
+
