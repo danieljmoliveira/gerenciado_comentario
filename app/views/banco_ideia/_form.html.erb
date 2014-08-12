@@ -24,6 +24,7 @@
   .direita{
     float:right;
     margin-left: 200px; 
+    width: 318px;
   }
   li {
       border-color: #ECECEC #E1E1E1 #E2E2E2;
@@ -38,121 +39,175 @@
   ol, ul {
       list-style: none outside none;
   }
+  input{
+    height: 30px !important;
+  }
 
 </style>
 
-<%= form_for(@banco_ideium) do |f| %>
-  <% if @banco_ideium.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@banco_ideium.errors.count, "error") %> prohibited this banco_ideium from being saved:</h2>
+<script type="text/javascript">
+ var RecaptchaOptions = {
+    theme : 'white',
+    tabindex : 2,
 
-      <ul>
-      <% @banco_ideium.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+    custom_theme_widget: 'recaptcha_widget' 
+ };
+
+</script>
+
+
+
+<div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="#" class="navbar-brand">Projeto Ideia</a>
     </div>
-  <% end %>
-
-  <%= hidden_field_tag "banco_ideium[lista_tipo]" %>
-  <div>
-    <div class="wrapper">
-      <section  class="esquerda">
-        <div align="center">
-          AVALIE AS IDEIAS QUE JÁ FORAM PROPOSTAS E <br />
-          compartilhe as que você mais gostou<br />
-          <%=select("escolher", "tema", @temas.collect {|p| [ p.descricao, p.id ] }, { include_blank: true })%>
-        </div><br /><br />
-        <div id="id_ideias">
-          <ul id="setor_ideia">            
-              <% @ideias.each do |d| %>
-                <li>
-                  <b><%= d.titulo %></b><br />
-                  <%= d.texto_ideia[0..100] %>... <br /><br />
-                  <div style="float:left;">
-                    Ideia enviada por: <%= d.nome %>
-                  </div>
-                  <div style="float:right;">
-                    <a href="javascript:void(0);" class="ver_mais" data-ideia="<%= d.id%>">Ver Mais</a> 
-                  </div><br /><br />
-                  <div class="teste-star star<%=d.id%>" >
-                    <input class="star {split:2}" type="radio" value="1" name="star<%=d.id%>">
-                    <input class="star {split:2}" type="radio" value="2" name="star<%=d.id%>">
-                    <input class="star {split:2}" type="radio" value="3" name="star<%=d.id%>">
-                    <input class="star {split:2}" type="radio" value="4" name="star<%=d.id%>">
-                    <input class="star {split:2}" type="radio" value="5" name="star<%=d.id%>">
-                  </div><br /> <br />
-                  <div id="fb-root"></div>  
-                  <div class="fb-share-button" data-href="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=d.id%>"></div>
-                  <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-url="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=d.id%>">Tweet</a>
-                  <div class="g-plusone" data-size="tall" data-annotation="none"></div>
-                </li>
-              <% end %>            
-          </ul>
-        </div>  
-      </section>
-
-      <aside class="pull-right">
-        
-        <section class="direita">
-          <div>
-            1 - Quem é você?
-          </div><br />
-          <div class="field" id="id_passo_01">
-            Nome:     <%= f.text_field :nome %><br /> 
-            e-mail:   <%= f.text_field :email %><br /> 
-            Estado:   <%= f.text_field :estado %><br /> 
-            Cidade:   <%= f.text_field :cidade %><br /> 
-            Telefone: <%= f.text_field :telefone %><br /><br />
-            <a href="javascript:void(0)" id="btn_passo_01">Prosseguir</a> <br /><br />
-          </div>
-          <div>
-            2 - Tema
-          </div><br />
-          <div class="field" style="display:none;" id="id_passo_02" >
-            <% @temas.each do |t|%>
-              <%= link_to t.descricao, 'javascript:void(0)', :class => 'tema', :id_tema => t.id %>&nbsp;&nbsp;
-            <% end %><br /><br />
-            <a href="javascript:void(0);" id="btn_passo_02">Prosseguir</a> <br /><br />
-          </div>
-          <div>
-            3 - Ideia
-          </div><br />
-          <div class="field" style="display:none;" id="id_passo_03" >
-            Título de sua idéia:<br /> <%= f.text_field :titulo %><br />
-            Escreva sua idéia:<br /> <%= f.text_area :texto_ideia %><br />
-            <%= f.submit 'Enviar'%>
-          </div>
-        </div>
-      </section>
-    </aside>
   </div>
+</div>
 
-<% end %>
+<div class="container" style="margin-top: 90px;">
+  <%= form_for(@banco_ideium, url: {action: "create"}) do |f| %>
+    <% if @banco_ideium.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@banco_ideium.errors.count, "error") %> prohibited this banco_ideium from being saved:</h2>
+
+        <ul>
+        <% @banco_ideium.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= hidden_field_tag "tema[selecionado]" %>
+    <div>    
+      <div class="wrapper">
+        <section  class="esquerda">
+          <div align="center">
+            AVALIE AS IDEIAS QUE JÁ FORAM PROPOSTAS E <br />
+            compartilhe as que você mais gostou<br /><br />
+            <%=select("escolher", "tema", @temas.collect {|p| [ p.descricao, p.id ] }, { prompt: 'Selecione um Título...' },{:class => 'form-control', :style=>"width: 330px"})%>
+          </div><br /><br />
+          <div id="id_ideias">
+            <ul id="setor_ideia">            
+                <% @ideias.each do |d| %>
+                  <li>
+                    <b><%= d.titulo %></b><br />
+                    <%= d.texto_ideia[0..100] %>... <br /><br />
+                    <div style="float:left;">
+                      Ideia enviada por: <%= d.nome %>
+                    </div>
+                    <div style="float:right;">
+                      <a href="javascript:void(0);" class="ver_mais" data-ideia="<%= d.id%>">Ver Mais</a> 
+                    </div><br /><br />
+              
+                      <a href="javascript:void(0);" class="classificar btn btn-primary" data-opcao="sim" data-ideia="<%= d.id%>" role="button">
+                        <i class="fa fa-thumbs-o-up "></i> Gostei
+                      </a>&nbsp;
+                      <a href="javascript:void(0);" class="classificar btn btn-primary" data-opcao="nao" data-ideia="<%= d.id%>" role="button">
+                        <i class="fa fa-thumbs-o-down "></i> Não Gostei
+                      </a>&nbsp;                 
+                      
+                    <!--div id="fb-root"></div>  
+                    <div class="fb-share-button" data-href="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=d.id%>"></div>
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-url="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=d.id%>">Tweet</a>
+                    <div class="g-plusone" data-size="tall" data-annotation="none"></div-->
+                  </li>
+                <% end %>            
+            </ul>
+          </div>  
+        </section>
+
+        <aside class="pull-right">
+          
+          <section class="direita">
+            <div>
+              <h4>1 - QUEM É VOCÊ?</h4>
+            </div>
+            <div class="field" id="id_passo_01">
+              <%= f.text_field :nome, :class=> 'form-control', :placeholder => 'Seu Nome' %><br /> 
+              <%= f.text_field :email, :class=> 'form-control', :placeholder => 'Email' %><br /> 
+              <div style="float:left;">
+                <%=select("banco_ideium", "estado", @estado.collect {|p| [ p.estado, p.estado ] }, { prompt: 'UF' }, {:class => "form-control"}  ) %>
+              </div>
+              <div style="float:right; margin-bottom: 10px; ">
+                <select id="banco_ideium_cidade" class="form-control" style="width: 240px;"><option value="">Cidade</option></select> 
+              </div>
+              <%= f.text_field :telefone,:class=> 'form-control', :placeholder => 'Telefone' %><br />
+              <a href="javascript:void(0);" class="btn btn-primary" id="btn_passo_01" role="button">Prosseguir</a><br /><br />
+            </div>
+            <div>
+              <h4>2 - TEMAS</h4>
+            </div>
+            <div class="field" style="display:none;" id="id_passo_02" >
+              <% @temas.each do |t|%>
+                <%= link_to t.descricao, 'javascript:void(0)', :class => 'tema btn', :id_tema => t.id %>
+              <% end %><br /><br />
+              <a href="javascript:void(0);" class="btn btn-primary" id="btn_passo_02" role="button">Prosseguir</a><br /><br />
+            </div>
+            <div>
+              <h4>3 - IDEIA</h4>
+            </div>
+            <div class="field" style="display:none;" id="id_passo_03" >
+              <%= f.text_field :titulo, :class=> 'form-control', :placeholder => 'Título de sua idéia' %><br />
+              <%= f.text_area :texto_ideia, :class=> 'form-control', :placeholder => 'Escreva sua idéia' %><br />
+              <%= recaptcha_tags ajax: true %>
+              <%= f.submit 'Enviar', :class => "btn btn-primary" %>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+  <% end %>
+</div>
 
 <script type="text/javascript">
 
   $(document).ready(function(){
     $('#btn_passo_01').click(function(){
-      $('#id_passo_01').hide();
-      $('#id_passo_02').show();
+
+      var nome = $('#banco_ideium_nome').val();
+      var email = $('#banco_ideium_email').val();
+      var estado = $('#banco_ideium_estado').val();
+      var cidade = $('#banco_ideium_cidade').val();
+      var telefone = $('#banco_ideium_telefone').val();
+      if ( nome == "" || email == "" || estado == "" || cidade == "" || telefone == "" ){
+        alert('Preencher todos os campos corretamente.')
+      }else{
+        if(email.indexOf('@') == "-1"){
+          alert('Erro na verificação do email.');
+        }else{
+          $('#id_passo_01').hide();
+          $('#id_passo_02').show();
+        }
+      }
+
     });
     $('#btn_passo_02').click(function(){
-      $('#id_passo_02').hide();
-      $('#id_passo_03').show();
+      if ($('.tema.btn.btn-success').length == 0 ){
+        alert('Selecionar algum tema.')
+      }else{
+        $('#id_passo_02').hide();
+        $('#id_passo_03').show();
+      }
     });
 
     $('.tema').click(function(){ 
-      $(this).toggleClass('marcar');
+      $(this).toggleClass('btn-success');
       var arr = []
+      $('#tema_selecionado').val(arr);
 
-      $.each($('.tema'), function(index, value){
-        if ($('.tema')[index].attributes['class'].value == "tema marcar" ){
-          arr.push($('.tema')[index].attributes['id_tema'].value)
-        }
-        
+      $.each($('.tema.btn.btn-success'), function(index, value){
+          arr.push($('.tema.btn.btn-success')[index].attributes['id_tema'].value)  
       });
-      $('#banco_ideium_lista_tipo').val(arr);
+      $('#tema_selecionado').val(arr);
     });
 
     $('#escolher_tema').change(function(){
@@ -214,25 +269,38 @@
       s.parentNode.insertBefore(po, s);
     })();
 
-
-    $('.auto-submit-star').rating({
-      callback: function(value, link){
-        alert(value);
-      }
+    /*estado - cidade*/
+    $('#banco_ideium_estado').change(function(){
+      var estado = $(this).val();
+      $.ajax({
+        url : 'escolher_cidade',
+        type : 'GET',
+        data : 'estado=' + estado,
+        success : function(data){
+          $('#banco_ideium_cidade').html(data);
+        },
+        error : function(){
+          alert('Ocorreu um erro!')
+        }
+      })
     });
 
-    $('.star').click(function(){
+    $('.classificar').click(function(){
+      var opcao = $(this).attr('data-opcao');
+      var numero = $(this).attr('data-ideia');
+      $.ajax({
+        url : 'classificar_ideia',
+        type : 'GET',
+        data : 'numero=' + numero + '&opcao='+ opcao,
+        success : function(data){
+          //$('#banco_ideium_cidade').html(data);
+        },
+        error : function(){
+          alert('Ocorreu um erro!')
+        }
+      })
     });
-
-    $('.auto-submit-star').rating({ 
-      callback: function(value, link){ 
-        alert(value); 
-      } 
-    });
-
-
   });
-
 
 </script>
 

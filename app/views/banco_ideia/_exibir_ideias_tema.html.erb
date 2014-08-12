@@ -8,19 +8,19 @@
 	        Ideia enviada por: <%= d.nome %>
 	      </div>
 	      <div style="float:right;">
-	        <a href="javascript:void(0);" class="ver_mais" data-ideia="<%= d.id%>">Ver Mais</a> 
+	        <a href="javascript:void(0);" class="ver_mais" data-ideia="<%= d.id%>">Ver Mais</a>  
 	      </div><br /><br />
-	      <div class="teste-star star<%=d.id%>" >
-	        <input class="star {split:2}" type="radio" value="1" name="star<%=d.id%>">
-	        <input class="star {split:2}" type="radio" value="2" name="star<%=d.id%>">
-	        <input class="star {split:2}" type="radio" value="3" name="star<%=d.id%>">
-	        <input class="star {split:2}" type="radio" value="4" name="star<%=d.id%>">
-	        <input class="star {split:2}" type="radio" value="5" name="star<%=d.id%>">
-	      </div><br /> <br />
-	      <div id="fb-root"></div>  
+	      <a href="javascript:void(0);" class="classificar btn btn-primary" data-opcao="sim" data-ideia="<%= d.id%>" role="button">
+          	<i class="fa fa-thumbs-o-up "></i> Gostei
+          </a>&nbsp;
+          <a href="javascript:void(0);" class="classificar btn btn-primary" data-opcao="nao" data-ideia="<%= d.id%>" role="button">
+            <i class="fa fa-thumbs-o-down "></i> Não Gostei
+          </a>&nbsp; 
+	      <br /> <br />
+	      <!--div id="fb-root"></div>  
 	      <div class="fb-share-button" data-href="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=d.id%>"></div>
 	      <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-url="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=d.id%>">Tweet</a>
-	      <div class="g-plusone" data-size="tall" data-annotation="none"></div>
+	      <div class="g-plusone" data-size="tall" data-annotation="none"></div-->
 	    </li>
 	  <% end %>            
 	</ul>

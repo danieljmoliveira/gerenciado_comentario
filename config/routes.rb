@@ -1,18 +1,25 @@
 Rails.application.routes.draw do
   resources :temas
 
+
+  get 'banco_ideia/escolher_cidade' => 'banco_ideia#escolher_cidade'
   get 'banco_ideia/exibir_ideias_tema' => 'banco_ideia#exibir_ideias_tema'
   get 'banco_ideia/exibir_ideia_completa' => 'banco_ideia#exibir_ideia_completa'
+  get 'banco_ideia/classificar_ideia' => 'banco_ideia#classificar_ideia'
+
+  get 'banco_ideia/new'
+
+  #root 'banco_ideia#new'
 
   resources :banco_ideia
 
-  get 'banco_ideia/new'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'banco_ideia#new'
+  #
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

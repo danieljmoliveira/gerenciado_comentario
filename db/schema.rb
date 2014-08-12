@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140809162717) do
+ActiveRecord::Schema.define(version: 20140812102716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,27 @@ ActiveRecord::Schema.define(version: 20140809162717) do
     t.string   "lista_tipo"
     t.string   "titulo"
     t.text     "texto_ideia"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "banco_ideia_temas", force: true do |t|
+    t.integer  "banco_ideium_id"
+    t.integer  "tema_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cidade_estados", force: true do |t|
+    t.string   "estado"
+    t.string   "cidade"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ideia_votos", force: true do |t|
+    t.string   "voto"
+    t.integer  "banco_ideium_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

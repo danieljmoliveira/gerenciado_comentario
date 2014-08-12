@@ -17,6 +17,7 @@ class BancoIdeiaController < ApplicationController
     @banco_ideium = BancoIdeium.new
     @ideias = BancoIdeium.all
     @temas = Tema.all
+    @estado = CidadeEstado.all.select('distinct estado')
   end
 
   # GET /banco_ideia/1/edit
@@ -26,17 +27,48 @@ class BancoIdeiaController < ApplicationController
   # POST /banco_ideia
   # POST /banco_ideia.json
   def create
-
+    array_tema = params[:tema][:selecionado].split(',')
+    
     @banco_ideium = BancoIdeium.new(banco_ideium_params)
 
-    respond_to do |format|
-      if @banco_ideium.save
-        format.html { redirect_to :action => 'new'  }
-        #format.html { redirect_to @banco_ideium, notice: 'Banco ideium was successfully created.' }
-        #format.json { render :show, status: :created, location: @banco_ideium }
-      else
-        format.html { render :new }
-        format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
+    @banco_ideium = BancoIdeium.new
+            @ideias = BancoIdeium.all
+            @temas = Tema.all
+            @estado = CidadeEstado.all.select('distinct estado')      
+
+    BancoIdeium.transaction do
+      respond_to do |format|
+        if verify_recaptcha
+          if @banco_ideium.save 
+            array_tema.each do |t|
+              @banco_ideia_tema = BancoIdeiaTema.new
+              @banco_ideia_tema.banco_ideium_id = @banco_ideium.id
+              @banco_ideia_tema.tema_id = t.to_i
+              @banco_ideia_tema.save
+            end
+            format.html { redirect_to :action => 'new'  }
+            #format.html { redirect_to @banco_ideium, notice: 'Banco ideium was successfully created.' }
+            #format.json { render :show, status: :created, location: @banco_ideium }
+          else
+            @banco_ideium = BancoIdeium.new
+            @ideias = BancoIdeium.all
+            @temas = Tema.all
+            @estado = CidadeEstado.all.select('distinct estado')   
+                 
+
+            format.html { render :new }
+            format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
+          end
+        else
+          @banco_ideium = BancoIdeium.new
+            @ideias = BancoIdeium.all
+            @temas = Tema.all
+            @estado = CidadeEstado.all.select('distinct estado')   
+          #flash.delete(:recaptcha_error) # get rid of the recaptcha error being flashed by the gem.
+          #flash.now[:error] = 'reCAPTCHA is incorrect. Please try again.'
+          format.html { render :new }
+          format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -65,8 +97,19 @@ class BancoIdeiaController < ApplicationController
     end
   end
 
+  def escolher_cidade
+     @cidades = CidadeEstado.where(estado: params[:estado])
+     respond_to do |format|
+      format.html {render :partial => 'escolher_cidade'}
+    end
+  end
+
   def exibir_ideias_tema
-    @temas_solicitado = BancoIdeium.ideias_por_temas(params[:codigo_tema])
+    if params[:codigo_tema] == ""
+      @temas_solicitado = BancoIdeium.all
+    else
+      @temas_solicitado = BancoIdeium.ideias_por_temas(params[:codigo_tema])
+    end
     respond_to do |format|
       format.html {render :partial => 'exibir_ideias_tema'}
     end
@@ -77,6 +120,14 @@ class BancoIdeiaController < ApplicationController
     respond_to do |format|
       format.html {render :partial => 'exibir_ideia_completa'}
     end
+  end
+
+  def classificar_ideia
+    @voto_ideia = IdeiaVoto.new
+    @voto_ideia.banco_ideia_id = params[:numero]
+    @voto_ideia.voto = params[:opcao]
+    @voto_ideia.save
+    redirect_to :action => 'new'
   end
 
   private
