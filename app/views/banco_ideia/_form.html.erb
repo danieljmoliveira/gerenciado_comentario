@@ -2,13 +2,9 @@
  var RecaptchaOptions = {
     theme : 'white',
     tabindex : 2,
-
     custom_theme_widget: 'recaptcha_widget' 
  };
-
 </script>
-
-
 
 <div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
@@ -87,8 +83,8 @@
               <h4>1 - QUEM É VOCÊ?</h4>
             </div>
             <div class="field" id="id_passo_01">
-              <%= f.text_field :nome, :class=> 'form-control', :placeholder => 'Seu Nome' %><br /> 
-              <%= f.text_field :email, :class=> 'form-control', :placeholder => 'Email' %><br /> 
+              <%= f.text_field :nome, :class=> 'form-control', :placeholder => 'Seu Nome' ,:required=>'required'%><br /> 
+              <%= f.text_field :email, :class=> 'form-control', :placeholder => 'Email',:required=>'required' %><br /> 
               <div style="float:left;">
                 <%=select("banco_ideium", "estado", @estado.collect {|p| [ p.estado, p.estado ] }, { prompt: 'UF' }, {:class => "form-control"}  ) %>
               </div>

@@ -48,9 +48,7 @@ class BancoIdeiaController < ApplicationController
             format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
           end
         else
-          #flash.delete(:recaptcha_error) # get rid of the recaptcha error being flashed by the gem.
-          #flash.now[:error] = 'reCAPTCHA is incorrect. Please try again.'
-          format.html { redirect_to :action=>'new', notice: 'Vai pra china individuo preenche a porcaria do reCAPTCHA direito'  }
+          format.html {edirect_to banco_ideia_url, notice: 'Você precisas preencher os dados corretamente !'   }
           format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
         end
       end
