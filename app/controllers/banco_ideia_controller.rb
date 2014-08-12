@@ -44,23 +44,13 @@ class BancoIdeiaController < ApplicationController
             #format.html { redirect_to @banco_ideium, notice: 'Banco ideium was successfully created.' }
             #format.json { render :show, status: :created, location: @banco_ideium }
           else
-            @banco_ideium = BancoIdeium.new
-            @ideias = BancoIdeium.all
-            @temas = Tema.all
-            @estado = CidadeEstado.all.select('distinct estado')   
-                 
-
-            format.html { render :new }
+            format.html { redirect_to :action=>'new' }
             format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
           end
         else
-          @banco_ideium = BancoIdeium.new
-            @ideias = BancoIdeium.all
-            @temas = Tema.all
-            @estado = CidadeEstado.all.select('distinct estado')   
           #flash.delete(:recaptcha_error) # get rid of the recaptcha error being flashed by the gem.
           #flash.now[:error] = 'reCAPTCHA is incorrect. Please try again.'
-          format.html { render :new }
+          format.html { redirect_to :action=>'new', notice: 'Vai pra china individuo preenche a porcaria do reCAPTCHA direito'  }
           format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
         end
       end
@@ -102,7 +92,7 @@ class BancoIdeiaController < ApplicationController
     if params[:codigo_tema] == ""
       @temas_solicitado = BancoIdeium.all
     else
-      @temas_solicitado = BancoIdeium.ideias_por_temas(params[:codigo_tema])
+      @temas_solicitado = BancoIdeiaTema.pesquisa_temas(params[:codigo_tema])
     end
     respond_to do |format|
       format.html {render :partial => 'exibir_ideias_tema'}
@@ -118,7 +108,7 @@ class BancoIdeiaController < ApplicationController
 
   def classificar_ideia
     @voto_ideia = IdeiaVoto.new
-    @voto_ideia.banco_ideia_id = params[:numero]
+    @voto_ideia.banco_ideium_id = params[:numero]
     @voto_ideia.voto = params[:opcao]
     @voto_ideia.save
     redirect_to :action => 'new'

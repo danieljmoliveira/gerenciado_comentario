@@ -1,0 +1,43 @@
+
+  .marcar{
+    background-color: red;
+  }
+  .esquerda{
+    margin-right: 17px;
+    width: 540px;
+    float:left;
+  }
+
+  .wrapper {
+      margin: 0 auto;
+      width: 993px;
+  }
+
+  .wrapper > aside {
+      width: 430px;
+  }
+
+  .pull-right {
+      float: right;
+  }
+  .direita{
+    float:right;
+    margin-left: 200px; 
+    width: 318px;
+  }
+  li {
+      border-color: #ECECEC #E1E1E1 #E2E2E2;
+      border-style: solid;
+      border-width: 1px;
+      box-shadow: 0 -1px 1px 0 rgba(245, 245, 245, 0.2);
+      font-family: 'Lucida Grande';
+      margin-bottom: 10px;
+      padding: 34px 40px 35px 55px;
+  }
+
+  ol, ul {
+      list-style: none outside none;
+  }
+  input{
+    height: 30px !important;
+  }

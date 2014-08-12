@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -12,3 +13,11 @@
 		{estado: 'SP', cidade: 'São Paulo'},
 		{estado: 'RJ', cidade: 'Rio de Janeiro'}
 	])
+
+	tema  = Tema.create([
+		{descricao:'Segurança'},
+		{descricao:'Saúde'},
+		{descricao:'Educação'}
+
+	])
+
