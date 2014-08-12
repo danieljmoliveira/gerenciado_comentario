@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get 'banco_ideia/exibir_ideia_completa' => 'banco_ideia#exibir_ideia_completa'
   get 'banco_ideia/classificar_ideia' => 'banco_ideia#classificar_ideia'
 
-  get 'banco_ideia/new'
+  #get 'banco_ideia/new'
 
   #root 'banco_ideia#new'
 

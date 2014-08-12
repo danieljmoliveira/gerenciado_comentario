@@ -27,14 +27,8 @@ class BancoIdeiaController < ApplicationController
   # POST /banco_ideia
   # POST /banco_ideia.json
   def create
-    array_tema = params[:tema][:selecionado].split(',')
-    
+    array_tema = params[:tema][:selecionado].split(',') 
     @banco_ideium = BancoIdeium.new(banco_ideium_params)
-
-    @banco_ideium = BancoIdeium.new
-            @ideias = BancoIdeium.all
-            @temas = Tema.all
-            @estado = CidadeEstado.all.select('distinct estado')      
 
     BancoIdeium.transaction do
       respond_to do |format|
