@@ -1,4 +1,5 @@
   $(document).ready(function(){
+
     $('#btn_passo_01').click(function(){
 
       var nome = $('#banco_ideium_nome').val();
@@ -38,6 +39,21 @@
       $('#tema_selecionado').val(arr);
     });
 
+    $('.ver_mais').click(function(){
+      codigo = $(this).attr('data-ideia');
+      $.ajax({
+        url : 'exibir_ideia_completa',
+        type : 'GET',
+        data : "codigo_ideia="+codigo,
+        success: function(data){
+          $('#id_ideias').html(data);
+        },
+        error: function(){
+          alert('erro');
+        }
+      });
+    });
+
     $('#escolher_tema').change(function(){
       codigo = $(this).val();
       $.ajax({
@@ -53,20 +69,7 @@
       });
     });
 
-    $('.ver_mais').click(function(){
-      codigo = $(this).attr('data-ideia');
-      $.ajax({
-        url : 'exibir_ideia_completa',
-        type : 'GET',
-        data : "codigo_ideia="+codigo,
-        success: function(data){
-          $('#id_ideias').html(data);
-        },
-        error: function(){
-          alert('erro');
-        }
-      });
-    });
+    
 
     /* FACEBOOK */
     (function(d, s, id) {
@@ -99,7 +102,15 @@
 
     /*estado - cidade*/
     $('#banco_ideium_estado').change(function(){
-      var estado = $(this).val();
+      escolher_cidade(this);
+    });
+
+    if ($('#banco_ideium_estado').val() != ""){
+      escolher_cidade('#banco_ideium_estado');
+    }
+
+    function escolher_cidade(objeto){
+      var estado = $(objeto).val();
       $.ajax({
         url : 'escolher_cidade',
         type : 'GET',
@@ -111,7 +122,7 @@
           alert('Ocorreu um erro!')
         }
       })
-    });
+    }
 
     $('.classificar').click(function(){
       var opcao = $(this).attr('data-opcao');
@@ -128,4 +139,76 @@
         }
       })
     });
+
+    $('#btn_enviar').click(function(){
+      var nome = $('#banco_ideium_nome').val();
+      var nome = $('#banco_ideium_nome').val();
+      var nome = $('#banco_ideium_nome').val();
+      var nome = $('#banco_ideium_nome').val();
+      var nome = $('#banco_ideium_nome').val();
+
+      var numero = $(this).attr('data-ideia');
+      $.ajax({
+        url : 'create',
+        type : 'GET',
+        data : 'nome=' + numero + '&opcao='+ opcao,
+        success : function(data){
+          //$('#banco_ideium_cidade').html(data);
+        },
+        error : function(){
+          alert('Ocorreu um erro!')
+        }
+      })
+    });
+
+      //callback handler for form submit
+  $('#id_salvar').click(function(){
+
+    var postData = $('#new_banco_ideium').serializeArray();
+    var parada = true;
+
+    $.each(postData, function(index, value){
+      if (postData[index].value == ""){        
+        $(alert( "Preencher o campo " + postData[index].name.split(']')[0].split('[')[1]));
+        parada = true;
+        return false;
+      }
+    });
+
+    if( parada == true){
+
+      $.each(postData, function(index, value){
+        if (postData[index].name == "recaptcha_challenge_field"){        
+
+           $.ajax({
+              url : 'validar_recaptcha',
+              type: "POST",
+              data : postData,
+              success:function(data, textStatus, jqXHR){
+                  $(alert('Captcha OK!'));
+              },
+              error: function(jqXHR, textStatus, errorThrown){
+                $(alert('Captcha inválido!'));    
+              }
+            });
+         }
+      });
+
+      $.ajax({
+          url :   'create',
+          type: "POST",
+          data : postData,
+          success:function(data, textStatus, jqXHR){
+              $('#avalie_ideias').html(data);
+          },
+          error: function(jqXHR, textStatus, errorThrown){
+              //if fails     
+          }
+      });
+    }
+
+  });
+   
+  //$("#ajaxform").click(); //Submit  the FORM
+
   });

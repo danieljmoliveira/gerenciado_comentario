@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   get 'banco_ideia/exibir_ideias_tema' => 'banco_ideia#exibir_ideias_tema'
   get 'banco_ideia/exibir_ideia_completa' => 'banco_ideia#exibir_ideia_completa'
   get 'banco_ideia/classificar_ideia' => 'banco_ideia#classificar_ideia'
+  
+post 'banco_ideia/create' => 'banco_ideia#create'
+post 'banco_ideia/validar_recaptcha' => 'banco_ideia#validar_recaptcha' 
+
 
   #get 'banco_ideia/new'
 

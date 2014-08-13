@@ -1,2 +1,24 @@
-<b><%= @ideia_solicitada .titulo %></b><br />
-<%= @ideia_solicitada .texto_ideia %> <br /><br />
+<div id="id_ideias">
+	<ul id="setor_ideia">            
+	    <li>
+	      <b><%= @ideia_solicitada.titulo %></b><br />
+	      <%= @ideia_solicitada.texto_ideia %><br /><br />
+	      <div >
+	        Ideia enviada por: <%= @ideia_solicitada.nome %>
+	      </div>
+			<br /><br />
+	      <a href="javascript:void(0);" class="classificar btn btn-primary" data-opcao="sim" data-ideia="<%= @ideia_solicitada.id %>" role="button">
+          	<i class="fa fa-thumbs-o-up "></i> Gostei
+          </a>&nbsp;
+          <a href="javascript:void(0);" class="classificar btn btn-primary" data-opcao="nao" data-ideia="<%= @ideia_solicitada.id %>" role="button">
+            <i class="fa fa-thumbs-o-down "></i> Não Gostei
+          </a>&nbsp; 
+	      <br /> <br />
+	      <!--div id="fb-root"></div>  
+	      <div class="fb-share-button" data-href="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=@ideia_solicitada.id%>"></div>
+	      <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-url="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=@ideia_solicitada.id%>">Tweet</a>
+	      <div class="g-plusone" data-size="tall" data-annotation="none"></div-->
+	    </li>         
+	</ul>
+</div>  
+<%= javascript_include_tag "app" %>

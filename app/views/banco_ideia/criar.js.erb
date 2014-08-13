@@ -1,0 +1,3 @@
+$('form.new_article').on('ajax:success',function(event, data, status, xhr){
+    $(this).replaceWith('<div>Title: ' + data.title + '</div>' +'<div>Body: ' + data.body + '</div>');
+});

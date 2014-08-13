@@ -6,11 +6,12 @@
     custom_theme_widget: 'recaptcha_widget' 
  };
 
+
 </script>
 
 
 
-<div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+<div role="navigation" class="navbar navbar-inverse navbar-fixed-top" >
   <div class="container">
     <div class="navbar-header">
       <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
@@ -24,21 +25,11 @@
   </div>
 </div>
 
-<div class="container" style="margin-top: 90px;">
-  <%= form_for(@banco_ideium, url: {action: "create"}) do |f| %>
-    <% if @banco_ideium.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@banco_ideium.errors.count, "error") %> prohibited this banco_ideium from being saved:</h2>
 
-        <ul>
-        <% @banco_ideium.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-        </ul>
-      </div>
-    <% end %>
+<div class="container" id="avalie_ideias" >
 
-    <%= hidden_field_tag "tema[selecionado]" %>
+ <div style="margin-top: 90px;"></div>
+
     <div>    
       <div class="wrapper">
         <section  class="esquerda">
@@ -52,7 +43,9 @@
                 <% @ideias.each do |d| %>
                   <li>
                     <b><%= d.titulo %></b><br />
-                    <%= d.texto_ideia[0..100] %>... <br /><br />
+                    <div>
+                      <%= d.texto_ideia[0..100] %>... 
+                    </div><br /><br />
                     <div style="float:left;">
                       Ideia enviada por: <%= d.nome %>
                     </div>
@@ -66,23 +59,31 @@
                       <a href="javascript:void(0);" class="classificar btn btn-primary" data-opcao="nao" data-ideia="<%= d.id%>" role="button">
                         <i class="fa fa-thumbs-o-down "></i> Não Gostei
                       </a>&nbsp;<br /><br />               
-                    <div>  
-                        
+                    
+                    <!--div>                          
                       <div  style="float:left;" class="g-plusone" data-size="tall" data-annotation="none"></div>
                       <div style="float:left;" class="fb-like" data-href="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=d.id%>" data-layout="button" data-action="like" data-show-faces="true" data-share="false"></div>
                       <div style="float:left;">
                         <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-url="/banco_ideia/exibir_ideia_completa?codigo_ideia=<%=d.id%>">Tweet</a>
                       </div >
-                    </div>
+                    </div-->
                   </li>
                 <% end %>            
             </ul>
           </div>  
         </section>
 
+
+
         <aside class="pull-right">
           
           <section class="direita">
+
+
+
+           <%= form_for(@banco_ideium) do |f| %>
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %> 
+              <%= hidden_field_tag "tema[selecionado]" %>
             <div>
               <h4>1 - QUEM É VOCÊ?</h4>
             </div>
@@ -113,15 +114,20 @@
             <div class="field" style="display:none;" id="id_passo_03" >
               <%= f.text_field :titulo, :class=> 'form-control', :placeholder => 'Título de sua idéia',:required=>'required' %><br />
               <%= f.text_area :texto_ideia, :class=> 'form-control', :placeholder => 'Escreva sua idéia',:required=>'required' %><br />
-              <%= recaptcha_tags ajax: true %>
-              <%= f.submit 'Enviar', :class => "btn btn-primary" %>
+              <%= recaptcha_tags  %>
+              <%#= f.submit 'Enviar', :class => "btn btn-primary", :id=>"ajaxform" %>
+              <a href="javascript:void(0);" class="btn btn-primary" id="id_salvar" role="button">Enviar</a><br /><br />
+
+
+
             </div>
           </div>
+          <% end %>
         </section>
       </aside>
     </div>
 
-  <% end %>
+  
 </div>
 
 <%= javascript_include_tag "app"%>

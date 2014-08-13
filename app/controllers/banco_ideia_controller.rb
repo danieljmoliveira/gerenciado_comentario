@@ -30,9 +30,9 @@ class BancoIdeiaController < ApplicationController
     array_tema = params[:tema][:selecionado].split(',') 
     @banco_ideium = BancoIdeium.new(banco_ideium_params)
 
-    BancoIdeium.transaction do
+    #BancoIdeium.transaction do
       respond_to do |format|
-        if verify_recaptcha
+       # if verify_recaptcha
           if @banco_ideium.save 
             array_tema.each do |t|
               @banco_ideia_tema = BancoIdeiaTema.new
@@ -40,21 +40,25 @@ class BancoIdeiaController < ApplicationController
               @banco_ideia_tema.tema_id = t.to_i
               @banco_ideia_tema.save
             end
+            flash[:notice] = "Sucesso."
             format.html { redirect_to :action => 'new'  }
-            #format.html { redirect_to @banco_ideium, notice: 'Banco ideium was successfully created.' }
-            #format.json { render :show, status: :created, location: @banco_ideium }
+            format.json { render :show, status: :created, location: @banco_ideium }
           else
-            format.html { redirect_to :action=>'new' }
-            format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
+            format.html { render :action => 'new' }
+            #flash[:notice] = "Erro"
+            #format.html { redirect_to :action=>'new' }
+            #format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
           end
-        else
+        #else
+       #   format.js 
+       #   flash[:notice] = "Não conectou"
           #flash.delete(:recaptcha_error) # get rid of the recaptcha error being flashed by the gem.
           #flash.now[:error] = 'reCAPTCHA is incorrect. Please try again.'
-          format.html { redirect_to :action=>'new', notice: 'Vai pra china individuo preenche a porcaria do reCAPTCHA direito'  }
-          format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
-        end
+       #   format.html { redirect_to :action=>'new'  }
+       #   format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
+       # end
       end
-    end
+    #end
   end
 
   # PATCH/PUT /banco_ideia/1
@@ -114,10 +118,17 @@ class BancoIdeiaController < ApplicationController
     redirect_to :action => 'new'
   end
 
+  def validar_recaptcha
+    raise verify_recaptcha.inspect
+    unless verify_recaptcha
+      raise 'invalido'
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_banco_ideium
-      @banco_ideium = BancoIdeium.find(params[:id])
+      #@banco_ideium = BancoIdeium.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
