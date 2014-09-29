@@ -45,18 +45,8 @@ class BancoIdeiaController < ApplicationController
             format.json { render :show, status: :created, location: @banco_ideium }
           else
             format.html { render :action => 'new' }
-            #flash[:notice] = "Erro"
-            #format.html { redirect_to :action=>'new' }
-            #format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
           end
-        #else
-       #   format.js 
-       #   flash[:notice] = "Não conectou"
-          #flash.delete(:recaptcha_error) # get rid of the recaptcha error being flashed by the gem.
-          #flash.now[:error] = 'reCAPTCHA is incorrect. Please try again.'
-       #   format.html { redirect_to :action=>'new'  }
-       #   format.json { render json: @banco_ideium.errors, status: :unprocessable_entity }
-       # end
+
       end
     #end
   end
